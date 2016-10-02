@@ -1,0 +1,36 @@
+PODS:
+  - Alamofire (4.0.1)
+  - AlamofireObjectMapper (4.0.0):
+    - Alamofire (~> 4.0)
+    - ObjectMapper (~> 2.0)
+  - Nimble (5.0.0)
+  - ObjectMapper (2.0.0)
+  - Quick (0.10.0)
+  - RxCocoa (3.0.0-beta.1):
+    - RxSwift (~> 3.0.0-beta.1)
+  - RxSwift (3.0.0-beta.1)
+  - SwiftyJSON (3.1.0)
+
+DEPENDENCIES:
+  - Alamofire
+  - AlamofireObjectMapper
+  - Nimble
+  - ObjectMapper
+  - Quick
+  - RxCocoa (~> 3.0.0-beta.1)
+  - RxSwift (~> 3.0.0-beta.1)
+  - SwiftyJSON
+
+SPEC CHECKSUMS:
+  Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
+  AlamofireObjectMapper: 9faa3ce5a240efda1b209009a2d6e1e949227abc
+  Nimble: 56fc9f5020effa2206de22c3dd910f4fb011b92f
+  ObjectMapper: aed2570edabbd3c9b26c939e1cabdb6558f933e0
+  Quick: 5d290df1c69d5ee2f0729956dcf0fd9a30447eaa
+  RxCocoa: 8cecf331302b8ae5381bbab1bccba4ede2eae6a8
+  RxSwift: 0823e8d7969c23bfa9ddfb2afa4881e424a1a710
+  SwiftyJSON: 29b9f2a64f118c07e691667c2ba1efe536acfe0b
+
+PODFILE CHECKSUM: 88f166cc889e580a732fc3a836640a648dfd7c20
+
+COCOAPODS: 1.0.1

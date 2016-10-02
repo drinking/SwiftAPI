@@ -1,0 +1,119 @@
+###Prefix
+
+Prefix###
+
+###Headers
+import Foundation 
+import Alamofire
+import ObjectMapper
+import RxSwift
+Headers###
+
+###Service
+public class %@<REQ:Mappable,RESP:Mappable>: APIService {
+
+    lazy public var config: APIConfig = APIManager.sharedInstance.configFor(service: "%@")
+    class public func setup(host h:String, headers hs:[String:String] = [:]){
+        APIManager.sharedInstance.register(service: "%@", host: h,headers:hs)
+    }
+
+    public override init(subPath: String,method m:Alamofire.HTTPMethod = .get) {
+        super.init(subPath: subPath,method:m)
+    }
+    
+    override var host: String {
+        get {
+            if let ch = customHost {
+                return ch
+            }
+            return config.host
+        }
+    }
+    override var headers: [String:String] {
+        get {
+            if let ch = customHeaders {
+                ch.union(config.headers)
+                return ch
+            }
+            return config.headers
+        }
+    }
+    
+    public func send(_ params: REQ?=nil, completionHandler: ((DataResponse<RESP>) -> Void)? = nil) -> DataRequest {
+        
+        let url = self.host + self.subPath
+        return Alamofire.request(url, method: httpMethod, parameters: params?.toJSON(), encoding: URLEncoding.methodDependent, headers: headers).responseObject(queue: nil) { (response:DataResponse<RESP>) in
+            if completionHandler != nil {
+                completionHandler!(response)
+            }
+        }
+    }
+    
+    public func sendSginal(_ params:REQ?=nil) -> Observable<RESP> {
+        
+        return Observable.create { (observer) -> Disposable in
+            
+            let request = self.send(params){
+                response in
+                switch(response.result){
+                case .success(let value):
+                    observer.onNext(value)
+                    observer.onCompleted()
+                    break
+                case .failure(let error):
+                    observer.onError(error)
+                    break
+                }
+            }
+            
+            return Disposables.create {
+                request.cancel()
+            }
+            
+        }
+
+    }
+    
+}
+    
+
+Service###
+
+###APIRequest
+class %@: %@<%@,%@> {
+    class func instance()->%@<%@,%@>{
+        return %@<%@,%@>()
+    }
+}
+APIRequest###
+
+###Testor
+
+public class func runTest(_ testor:(_ d:String,_ i:String,_ runner:@escaping (@escaping ((Void)->Void))->())->(),
+                          host:String? = nil,
+                          argument:((APIService)->%@?)? = nil,
+                          expect:((%@)->Void)? = nil)->Void{
+    func run(done:@escaping ((Void)->Void)){
+        let get = %@.instance()
+        get.customHost = host
+        var arguments:%@? = nil
+        if let args = argument {
+            arguments = args(get)
+        }
+        
+        _ = get.sendSginal(arguments).subscribe(onNext: { (result) in
+            if let expect = expect {
+                expect(result)
+            }
+            done()
+        })
+        
+    }
+    let name = "%@"
+    let method = "%@"
+    testor(name,method,run)
+}
+
+Testor###
+
+
