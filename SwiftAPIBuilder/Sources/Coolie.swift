@@ -1247,7 +1247,8 @@ extension Coolie.Value {
                         }else if value.isArray{
                             print("@property(nonatomic, strong) NSArray *\(key);\n", terminator: "", to: &output)
                         }else {
-                            print("@property(nonatomic, strong) \(value.objCType) *\(key); \n", terminator: "", to: &output)
+                            let attribute = value.objCType == "NSString" ? "copy" : "strong"
+                            print("@property(nonatomic, \(attribute)) \(value.objCType) *\(key); \n", terminator: "", to: &output)
                         }
                     }
                 }

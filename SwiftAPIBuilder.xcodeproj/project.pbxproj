@@ -10,7 +10,6 @@
 		0402FB4053BDA8AD60B80FF8 /* Pods_SwiftAPIBuilder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95CF762601BB0D2650B62260 /* Pods_SwiftAPIBuilder.framework */; };
 		440182311D786E320086070B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440182301D786E320086070B /* AppDelegate.swift */; };
 		440182331D786E320086070B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440182321D786E320086070B /* ViewController.swift */; };
-		440182351D786E320086070B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 440182341D786E320086070B /* Assets.xcassets */; };
 		440182381D786E320086070B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 440182361D786E320086070B /* Main.storyboard */; };
 		441B50DC1D9902D0001F9773 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441B50CC1D9902D0001F9773 /* Common.swift */; };
 		441B50DD1D9902D0001F9773 /* Local.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441B50CE1D9902D0001F9773 /* Local.swift */; };
@@ -24,6 +23,7 @@
 		441B50E51D9902D0001F9773 /* Lazy-split.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441B50D91D9902D0001F9773 /* Lazy-split.swift */; };
 		441B50E61D9902D0001F9773 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441B50DA1D9902D0001F9773 /* Stream.swift */; };
 		441B50E71D9902D0001F9773 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441B50DB1D9902D0001F9773 /* String.swift */; };
+		446D4AC51DAC984F00E80909 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 440182341D786E320086070B /* Assets.xcassets */; };
 		44918E811DA0B6BE008098E1 /* APITemplate in Resources */ = {isa = PBXBuildFile; fileRef = 44918E7B1DA0B6BE008098E1 /* APITemplate */; };
 		44918E821DA0B6BE008098E1 /* CodeBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44918E7C1DA0B6BE008098E1 /* CodeBuilder.swift */; };
 		44918E831DA0B6BE008098E1 /* Coolie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44918E7D1DA0B6BE008098E1 /* Coolie.swift */; };
@@ -332,8 +332,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				440182351D786E320086070B /* Assets.xcassets in Resources */,
 				440182381D786E320086070B /* Main.storyboard in Resources */,
+				446D4AC51DAC984F00E80909 /* Assets.xcassets in Resources */,
 				44918E811DA0B6BE008098E1 /* APITemplate in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
