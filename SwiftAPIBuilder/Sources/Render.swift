@@ -44,7 +44,7 @@ public struct DKAPIRender: DKAPIRenderProtocol {
 
     public func renderAPITransition(transition: DKTransition) -> String {
         let serviceName = "\(transition.serviceName)<\(transition.requestModelName),\(transition.responseModelName)>"
-        let method = transition.meta.requestType?.description ?? ".get"
+        let method = transition.requestMethod.description
         return "public class \(self.prefix + transition.apiName): \(serviceName) {\n \t" +
                     "public class func instance()->\(serviceName){\n" +
                     "\t\treturn \(serviceName)(subPath:\"\(transition.href)\",method:\(method))\n\t}\(renderTestor(transition: transition))\n}\n"
