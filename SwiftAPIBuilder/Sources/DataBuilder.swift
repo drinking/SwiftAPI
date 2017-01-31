@@ -33,7 +33,7 @@ public struct DKDataStructure {
             var result = ""
             if (json.element == .Object){
                 let clzName = json["meta"]["id"].stringValue.replacingOccurrences(of: " ", with: "_")
-                result += "public struct " + clzName + "{\n"
+                result += "@objc public class " + clzName + ":NSObject,Mappable{\n"
             }
             
             guard let members = json["content"].array?.filter({ (json) -> Bool in
@@ -48,32 +48,29 @@ public struct DKDataStructure {
                 let property = PropertyType(member:member)
                 result += property.description
                 return property
-                }.reduce("\t init?(json:[String:Any]?){ \n guard let dict = json else{ return nil}\n") { $0 + $1.initializer} + "}\n"
+                }.reduce("\n public override init(){} \n init?(json:[String:Any]?){ \n guard let dict = json else{ return nil}\n") { $0 + $1.initializer} + "}\n"
             
+            result += genExtension(json: json)
             
             return result + "}\n"
         }
         
         return contents.reduce("") { (result, json) -> String in
-            result + "\n" + construct(json: json) + genExtension(json: json)
+            result + "\n" + construct(json: json)
         }
     }
     
     func genExtension(json:JSON)->String {
         var result = ""
-        if (json.element == .Object){
-            let clzName = json["meta"]["id"].stringValue.replacingOccurrences(of: " ", with: "")
-            result += "extension \(clzName):Mappable {\n"
-        }
         
         guard let members = json["content"].array?.filter({ (json) -> Bool in
             json.element == .Member
         }) else{
             return result + "}"
         }
-        result += "public init?(map: Map){self.init(json:map.JSON)}\n"
-        result += members.map {PropertyType(member:$0)}.reduce("\t public mutating func mapping(map: Map){\n") { $0 + $1.mapper} + "}\n"
-        return result + "}\n"
+        result += "required convenience public init?(map: Map){self.init(json:map.JSON)}\n"
+        result += members.map {PropertyType(member:$0)}.reduce("\t public func mapping(map: Map){\n") { $0 + $1.mapper} + "}\n"
+        return result
     }
     
 }

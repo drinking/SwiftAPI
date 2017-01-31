@@ -1011,9 +1011,9 @@ extension Coolie.Value {
             // struct name
             indentLevel(level: level)
             if let modelName = modelName {
-                print("public struct \(modelName) {", to: &output)
+                print("@objc public class \(modelName) :NSObject, Mappable{", to: &output)
             } else {
-                print("public struct Model {", to: &output)
+                print("@objc public class Model :NSObject, Mappable{", to: &output)
             }
             
             // properties
@@ -1041,7 +1041,7 @@ extension Coolie.Value {
             
             // initializer
             
-            print ("public init(){}\n",to:&output)
+            print ("public override init(){}\n",to:&output)
             print ("init?(json:[String:Any]?){ \n guard let dict = json else{ return nil}\n",to:&output)
             
             for key in info.keys.sorted() {
@@ -1066,9 +1066,7 @@ extension Coolie.Value {
                 }
             }
             print("}", to: &output)
-            // end initializer
-            indentLevel(level: level)
-            print("}", to: &output)
+            // end initializer 
             
         case .Array(let name, let values):
             if let first = values.first {
@@ -1137,15 +1135,13 @@ extension Coolie.Value {
     
     func printExtension(info: [Swift.String:Coolie.Value], modelName: Swift.String, toStream output: inout Swift.String) {
         
-        print("extension \(modelName) :Mappable {\n", to: &output)
-        print("public init?(map: Map){self.init(json:map.JSON)}", to: &output)
-        print("public mutating func mapping(map: Map){", to: &output)
+        print("required convenience public init?(map: Map){self.init(json:map.JSON)}\n", to: &output)
+        print("public func mapping(map: Map){", to: &output)
         for key in info.keys.sorted() {
             if let _ = info[key] {
                 print("\(key) <- map[\"\(key)\"] \n", terminator: "", to: &output)
             }
         }
-        print("}\n", to: &output)
         print("}\n", to: &output)
     }
     

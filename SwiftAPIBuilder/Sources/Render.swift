@@ -44,10 +44,10 @@ public struct DKAPIRender: DKAPIRenderProtocol {
 
     public func renderAPITransition(transition: DKTransition) -> String {
         let serviceName = "\(transition.serviceName)<\(transition.requestModelName),\(transition.responseModelName)>"
-        let method = transition.meta.requestType?.description ?? ".get"
+        let method = transition.requestMethod.description
         return "public class \(self.prefix + transition.apiName): \(serviceName) {\n \t" +
                     "public class func instance()->\(serviceName){\n" +
-                    "\t\treturn \(serviceName)(subPath:\"\(transition.href)\",method:\(method))\n\t}\(renderTestor(transition: transition))\n}\n"
+                    "\t\treturn \(serviceName)(subPath:\"\(transition.href)\",method:\(method))\n\t}\(renderTestor(transition: transition))\n}\n\(renderObjCExtension(transition: transition))\n"
     }
 
     public func renderAPIHeader() -> String {
@@ -62,6 +62,12 @@ public struct DKAPIRender: DKAPIRenderProtocol {
         }
         return ""
     }
+    
+    public func renderObjCExtension(transition: DKTransition) -> String {
+        
+        return String(format: getTextBetweenTag(tag: "ObjCExtension")!, transition.apiName.lowercased(),
+                          transition.requestModelName,transition.responseModelName,transition.apiName)
+    }
 
     public func renderDataStructure(transition: DKTransition) -> String {
 
@@ -73,6 +79,7 @@ public struct DKAPIRender: DKAPIRenderProtocol {
             var output = ""
             Coolie(JSONString: jsonString).printAPIModelWithName(modelName: modelName, toStream: &output)
             Coolie(JSONString: jsonString).printAPIModelExtensionWithName(modelName: modelName, toStream: &output)
+            output += "\n}";
             result += output
             result += "\n\n"
         }
@@ -83,6 +90,7 @@ public struct DKAPIRender: DKAPIRenderProtocol {
             var output = ""
             Coolie(JSONString: jsonString).printAPIModelWithName(modelName: modelName, toStream: &output)
             Coolie(JSONString: jsonString).printAPIModelExtensionWithName(modelName: modelName, toStream: &output)
+            output += "\n}";
             result += output
             result += "\n\n"
         }

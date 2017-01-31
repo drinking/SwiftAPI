@@ -1,20 +1,14 @@
-###Prefix
 
-Prefix###
-
-###Headers
 import Foundation 
 import Alamofire
 import ObjectMapper
 import RxSwift
-Headers###
 
-###Service
-public class %@<REQ:Mappable,RESP:Mappable>: APIService {
+public class FANCYAPIService<REQ:Mappable,RESP:Mappable>: APIService {
 
-    lazy public var config: APIConfig = APIManager.sharedInstance.configFor(service: "%@")
+    lazy public var config: APIConfig = APIManager.sharedInstance.configFor(service: "FANCYAPIService")
     class public func setup(host h:String, headers hs:[String:String] = [:]){
-        APIManager.sharedInstance.register(service: "%@", host: h,headers:hs)
+        APIManager.sharedInstance.register(service: "FANCYAPIService", host: h,headers:hs)
     }
 
     public override init(subPath: String,method m:Alamofire.HTTPMethod = .get) {
@@ -77,26 +71,19 @@ public class %@<REQ:Mappable,RESP:Mappable>: APIService {
 }
     
 
-Service###
-
-###APIRequest
-class %@: %@<%@,%@> {
-    class func instance()->%@<%@,%@>{
-        return %@<%@,%@>()
-    }
-}
-APIRequest###
-
-###Testor
+public class USERLOGIN: FANCYAPIService<USERLOGIN_REQUEST,LoginResult> {
+ 	public class func instance()->FANCYAPIService<USERLOGIN_REQUEST,LoginResult>{
+		return FANCYAPIService<USERLOGIN_REQUEST,LoginResult>(subPath:"/api/v1/login",method:.post)
+	}
 
 public class func runTest(_ testor:(_ d:String,_ i:String,_ runner:@escaping (@escaping ((Void)->Void))->())->(),
                           host:String? = nil,
-                          argument:((APIService)->%@?)? = nil,
-                          expect:((%@)->Void)? = nil)->Void{
+                          argument:((APIService)->USERLOGIN_REQUEST?)? = nil,
+                          expect:((LoginResult)->Void)? = nil)->Void{
     func run(done:@escaping ((Void)->Void)){
-        let get = %@.instance()
+        let get = USERLOGIN.instance()
         get.customHost = host
-        var arguments:%@? = nil
+        var arguments:USERLOGIN_REQUEST? = nil
         if let args = argument {
             arguments = args(get)
         }
@@ -109,19 +96,19 @@ public class func runTest(_ testor:(_ d:String,_ i:String,_ runner:@escaping (@e
         })
         
     }
-    let name = "%@"
-    let method = "%@"
+    let name = "USERLOGIN"
+    let method = "GET"
     testor(name,method,run)
 }
 
-Testor###
 
-###ObjCExtension
+}
+
 
 public extension FYNetworkEngine {
 
-    public func %@(_ params: %@?=nil,success:@escaping (_ result:%@)->(),failure:@escaping ()->()){
-        %@.instance().sendSginal(params).subscribe(onNext: { (result) in
+    public func userlogin(_ params: USERLOGIN_REQUEST?=nil,success:@escaping (_ result:LoginResult)->(),failure:@escaping ()->()){
+        USERLOGIN.instance().sendSginal(params).subscribe(onNext: { (result) in
             success(result)
         }, onError: { (error) in
             failure()
@@ -129,5 +116,49 @@ public extension FYNetworkEngine {
     }
 }
 
-ObjCExtension###
 
+
+
+@objc public class USERLOGIN_REQUEST :NSObject, Mappable{
+	public var password: String?
+	public var username: String?
+public override init(){}
+
+init?(json:[String:Any]?){ 
+ guard let dict = json else{ return nil}
+
+	self.password = dict["password"] as? String
+	self.username = dict["username"] as? String
+}
+required convenience public init?(map: Map){self.init(json:map.JSON)}
+
+public func mapping(map: Map){
+password <- map["password"] 
+username <- map["username"] 
+}
+
+
+}
+
+
+
+
+@objc public class LoginResult:NSObject,Mappable{
+public var error:String?
+public var login:String?
+public var token:String?
+
+ public override init(){} 
+ init?(json:[String:Any]?){ 
+ guard let dict = json else{ return nil}
+self.error = dict["error"] as? String
+self.login = dict["login"] as? String
+self.token = dict["token"] as? String
+}
+required convenience public init?(map: Map){self.init(json:map.JSON)}
+	 public func mapping(map: Map){
+error <- map["error"] 
+login <- map["login"] 
+token <- map["token"] 
+}
+}

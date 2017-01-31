@@ -1,0 +1,22 @@
+FORMAT: 1A
+# Fancy
+
+## User  [/api/v1/login]
+### Login[POST]
++ Request (application/json)
+    {
+    "username": "drinking",
+    "password": "12345678"
+    }
+
+
++ Response 200 (application/json)
+    + Attributes (LoginResult)
+
+
+# Data Structures
+
+## LoginResult (object)
++ error: (string) 
++ login: (string) 
++ token: (string)
