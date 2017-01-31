@@ -121,9 +121,12 @@ Testor###
 public extension FYNetworkEngine {
 
     public func %@(_ params: %@?=nil,success:@escaping (_ result:%@)->(),failure:@escaping ()->()){
+        FYNetworkEngine.instance().showHud()
         %@.instance().sendSginal(params).subscribe(onNext: { (result) in
+            FYNetworkEngine.instance().hideHud()
             success(result)
         }, onError: { (error) in
+            FYNetworkEngine.instance().hideHud()
             failure()
         })
     }

@@ -2,7 +2,7 @@ FORMAT: 1A
 # Fancy
 
 ## User  [/api/v1/login]
-### Login[POST]
+### Login [POST]
 + Request (application/json)
     {
     "username": "drinking",
@@ -13,6 +13,11 @@ FORMAT: 1A
 + Response 200 (application/json)
     + Attributes (LoginResult)
 
+## Meeting [/api/v1/meetinglist.json]
+### GetList [GET]
++ Response 200 (application/json)
+    + Attributes (MeetingResult)
+
 
 # Data Structures
 
@@ -20,3 +25,12 @@ FORMAT: 1A
 + error: (string) 
 + login: (string) 
 + token: (string)
+
+## MeetingEntity (object)
+
+## MeetingResult (object)
++ error: (string) 
++ login: (string) 
++ success: (bool)
+
+
