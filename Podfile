@@ -12,10 +12,10 @@ target 'SwiftAPITest' do
     pod 'SwiftyJSON'
     pod 'ObjectMapper'
     pod 'AlamofireObjectMapper'
+    pod 'RxSwift',    '~> 3.1.0'
     pod 'Quick'
     pod 'Nimble'
-    pod 'RxSwift',    '~> 3.0.0-beta.1'
-    pod 'RxCocoa',    '~> 3.0.0-beta.1'
+    
 end
 
 post_install do |installer|

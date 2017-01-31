@@ -8,11 +8,11 @@
 
 import Foundation
 
-class TakeUntilSinkOther<ElementType, Other, O: ObserverType>
+class TakeUntilSinkOther<Other, O: ObserverType>
     : ObserverType
     , LockOwnerType
-    , SynchronizedOnType where O.E == ElementType {
-    typealias Parent = TakeUntilSink<ElementType, Other, O>
+    , SynchronizedOnType {
+    typealias Parent = TakeUntilSink<Other, O>
     typealias E = Other
     
     fileprivate let _parent: Parent
@@ -26,7 +26,7 @@ class TakeUntilSinkOther<ElementType, Other, O: ObserverType>
     init(parent: Parent) {
         _parent = parent
 #if TRACE_RESOURCES
-        let _ = AtomicIncrement(&resourceCount)
+        let _ = Resources.incrementTotal()
 #endif
     }
     
@@ -50,17 +50,17 @@ class TakeUntilSinkOther<ElementType, Other, O: ObserverType>
     
 #if TRACE_RESOURCES
     deinit {
-        let _ = AtomicDecrement(&resourceCount)
+        let _ = Resources.decrementTotal()
     }
 #endif
 }
 
-class TakeUntilSink<ElementType, Other, O: ObserverType>
+class TakeUntilSink<Other, O: ObserverType>
     : Sink<O>
     , LockOwnerType
     , ObserverType
-    , SynchronizedOnType where O.E == ElementType {
-    typealias E = ElementType
+    , SynchronizedOnType {
+    typealias E = O.E
     typealias Parent = TakeUntil<E, Other>
     
     fileprivate let _parent: Parent
@@ -70,9 +70,9 @@ class TakeUntilSink<ElementType, Other, O: ObserverType>
     // state
     fileprivate var _open = false
     
-    init(parent: Parent, observer: O) {
+    init(parent: Parent, observer: O, cancel: Cancelable) {
         _parent = parent
-        super.init(observer: observer)
+        super.init(observer: observer, cancel: cancel)
     }
     
     func on(_ event: Event<E>) {
@@ -95,7 +95,7 @@ class TakeUntilSink<ElementType, Other, O: ObserverType>
     func run() -> Disposable {
         let otherObserver = TakeUntilSinkOther(parent: self)
         let otherSubscription = _parent._other.subscribe(otherObserver)
-        otherObserver._subscription.disposable = otherSubscription
+        otherObserver._subscription.setDisposable(otherSubscription)
         let sourceSubscription = _parent._source.subscribe(self)
         
         return Disposables.create(sourceSubscription, otherObserver._subscription)
@@ -112,9 +112,9 @@ class TakeUntil<Element, Other>: Producer<Element> {
         _other = other
     }
     
-    override func run<O : ObserverType>(_ observer: O) -> Disposable where O.E == Element {
-        let sink = TakeUntilSink(parent: self, observer: observer)
-        sink.disposable = sink.run()
-        return sink
+    override func run<O : ObserverType>(_ observer: O, cancel: Cancelable) -> (sink: Disposable, subscription: Disposable) where O.E == Element {
+        let sink = TakeUntilSink(parent: self, observer: observer, cancel: cancel)
+        let subscription = sink.run()
+        return (sink: sink, subscription: subscription)
     }
 }

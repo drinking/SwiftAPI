@@ -6,9 +6,7 @@ PODS:
   - Nimble (5.0.0)
   - ObjectMapper (2.0.0)
   - Quick (0.10.0)
-  - RxCocoa (3.0.0-beta.1):
-    - RxSwift (~> 3.0.0-beta.1)
-  - RxSwift (3.0.0-beta.1)
+  - RxSwift (3.1.0)
   - SwiftyJSON (3.1.0)
 
 DEPENDENCIES:
@@ -17,8 +15,7 @@ DEPENDENCIES:
   - Nimble
   - ObjectMapper
   - Quick
-  - RxCocoa (~> 3.0.0-beta.1)
-  - RxSwift (~> 3.0.0-beta.1)
+  - RxSwift (~> 3.1.0)
   - SwiftyJSON
 
 SPEC CHECKSUMS:
@@ -27,10 +24,9 @@ SPEC CHECKSUMS:
   Nimble: 56fc9f5020effa2206de22c3dd910f4fb011b92f
   ObjectMapper: aed2570edabbd3c9b26c939e1cabdb6558f933e0
   Quick: 5d290df1c69d5ee2f0729956dcf0fd9a30447eaa
-  RxCocoa: 8cecf331302b8ae5381bbab1bccba4ede2eae6a8
-  RxSwift: 0823e8d7969c23bfa9ddfb2afa4881e424a1a710
+  RxSwift: 83ff553e7593fdfdcb2562933a64c0284dffdadc
   SwiftyJSON: 29b9f2a64f118c07e691667c2ba1efe536acfe0b
 
-PODFILE CHECKSUM: 88f166cc889e580a732fc3a836640a648dfd7c20
+PODFILE CHECKSUM: 0605716336b2be1f473cf4df5f006300c81c3f0f
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.1
