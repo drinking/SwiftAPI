@@ -1004,7 +1004,13 @@ extension Coolie.Value {
         
         switch self {
             
-        case .Bool, .Number, .String, .Null:
+        case .Bool:
+            print(type + " = false", to: &output)
+        case .Number:
+            print(type + " = 0", to: &output)
+        case .String:
+            print(type + " = \"\"", to: &output)
+        case .Null:
             print(type + "?", to: &output)
             
         case .Dictionary(let info):
@@ -1061,7 +1067,7 @@ extension Coolie.Value {
                         }
                     } else {
                         indentLevel(level: level + 1)
-                        print("self.\(key) = dict[\"\(key)\"] as? \(value.type)\n", terminator: "", to: &output)
+                        print("self.\(key) <= dict[\"\(key)\"] \n", terminator: "", to: &output)
                     }
                 }
             }

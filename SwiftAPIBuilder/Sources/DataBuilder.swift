@@ -119,17 +119,17 @@ public indirect enum PropertyType {
     var description:String {
         switch self {
         case ._String(let name, let type):
-            return "public var \(name):\(type)?\n"
+            return "public var \(name):\(type) = \"\" \n"
         case ._Number(let name,let value):
-            return "public var \(name):\(parseNumberType(number: value))?\n"
+            return "public var \(name):\(parseNumberType(number: value)) = 0 \n"
         case ._Object(let name,let type):
             return "public var \(name):\(type)?\n"
         case ._Bool(let name, let type):
-            return "public var \(name):\(type)?\n"
+            return "public var \(name):\(type) = false\n"
         case ._Class(let name,let type):
             return "public var \(name):\(type)?\n"
         case ._Array(let name, let property):
-            return "public var \(name):[\(property.arrayType)]?\n"
+            return "public var \(name):[\(property.arrayType)]? \n"
         }
     }
     
@@ -169,14 +169,14 @@ public indirect enum PropertyType {
     
     var initializer:String{
         switch self {
-        case ._String(let name, let type):
-            return "self.\(name) = dict[\"\(name)\"] as? \(type)\n"
-        case ._Number(let name,let value):
-            return "self.\(name) = dict[\"\(name)\"] as? \(parseNumberType(number: value))\n"
+        case ._String(let name, _):
+            return "self.\(name) <= dict[\"\(name)\"] \n"
+        case ._Number(let name, _):
+            return "self.\(name) <= dict[\"\(name)\"] \n"
         case ._Object(let name,let type):
             return "self.\(name) = \(type)(json:dict[\"\(name)\"] as? [String:AnyObject])\n"
-        case ._Bool(let name, let type):
-            return "self.\(name) = dict[\"\(name)\"] as? \(type)\n"
+        case ._Bool(let name, _):
+            return "self.\(name) <= dict[\"\(name)\"] \n"
         case ._Class(let name,let type):
             return "self.\(name) = \(type)(json:dict[\"\(name)\"] as? [String:AnyObject])\n"
         case ._Array(let name, let property):

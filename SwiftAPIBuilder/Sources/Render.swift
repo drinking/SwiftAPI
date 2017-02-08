@@ -30,7 +30,7 @@ public struct DKAPIRender: DKAPIRenderProtocol {
         } else {
             text = nil
         }
-        enableTestor = true
+        enableTestor = false
     }
 
     public func renderAPIService(serviceName: String) -> String {
