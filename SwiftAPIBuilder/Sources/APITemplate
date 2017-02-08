@@ -42,7 +42,7 @@ public class %@<REQ:Mappable,RESP:Mappable>: APIService {
     public func send(_ params: REQ?=nil, completionHandler: ((DataResponse<RESP>) -> Void)? = nil) -> DataRequest {
         
         let url = self.host + self.subPath
-        return Alamofire.request(url, method: httpMethod, parameters: params?.toJSON(), encoding: URLEncoding.methodDependent, headers: headers).responseObject(queue: nil) { (response:DataResponse<RESP>) in
+        return FYNetworkEngine.instance().sessionManager.request(url, method: httpMethod, parameters: params?.toJSON(), encoding: URLEncoding.methodDependent, headers: headers).responseObject(queue: nil) { (response:DataResponse<RESP>) in
             if completionHandler != nil {
                 completionHandler!(response)
             }
